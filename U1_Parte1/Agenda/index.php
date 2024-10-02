@@ -68,6 +68,10 @@ $modelo = new Modelo('agenda.dat');
             //Chequear si ya hay un contacto para el teléfono
             $persona = $modelo->obtenerContactos($_POST['telef']);
 
+            //Persona tiene null si no hay contacto y un objeto contacto
+                //con todos los datos si hay contacto
+            if($persona==null){
+
             $id = $modelo->obtenerID();
     
             // El nombre del fichero será el instante de tiempo en el que se sube
@@ -87,6 +91,10 @@ $modelo = new Modelo('agenda.dat');
             $origen = $_FILES['foto']['tmp_name'];
             move_uploaded_file($origen,$destino);
     
+            }else{
+                echo '<h3 style="color:red;"> Error:Ya existe un contacto con ese telf'
+                .$persona->getNombre().'</h3>';
+            }
         }
     }
     

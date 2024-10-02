@@ -79,7 +79,20 @@ class Modelo{
 
             try{
                 if(file_exists($this->nombre)){
-                $registros = file($this->nombre);
+                    $registros = file($this->nombre);
+
+                foreach($registros as $linea){
+                    $campos = explode(';',$linea);
+                    
+                    if($campos[2]==$telf){
+                        //He encontrado un contacto para el telf buscado
+                        $resultado = new Contacto($campos[0],$campos[1],
+                        $campos[2],$campos[3],$campos[4]);
+
+                        return $resultado;
+                    }
+                }
+                
                 }
 
             }catch(\Throwable $th){
