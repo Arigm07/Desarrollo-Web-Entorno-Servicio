@@ -1,6 +1,8 @@
 <?php
 
 require_once 'Modelo.php';
+require_once 'Notas.php';
+
 $modelo = new Modelo();
 
 // Cargar asignaturas en un array
@@ -78,16 +80,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <th>Nota</th>
             <th>Tipo</th>
         </tr>
-        <?php foreach ($notas as $nota): ?>
-            <?php list($fecha, $asignatura, $descripcion, $notaValor, $tipo) = explode('|', $nota); ?>
-            <tr>
-                <td><?php echo date('d/m/Y', strtotime($fecha)); ?></td>
-                <td><?php echo htmlspecialchars($asignatura); ?></td>
-                <td><?php echo htmlspecialchars($descripcion); ?></td>
-                <td><?php echo htmlspecialchars($notaValor); ?></td>
-                <td><?php echo htmlspecialchars($tipo); ?></td>
-            </tr>
-        <?php endforeach; ?>
+
+        <?php 
+        // Mostrar notas registradas
+        $notasRegistradas = $modelo->obtenerNotas();
+        foreach ($notasRegistradas as $nota) {
+            echo '<tr>';
+            echo '<td>' . htmlspecialchars($nota->getFecha()) . '</td>';
+            echo '<td>' . htmlspecialchars($nota->getAsignatura()) . '</td>';
+            echo '<td>' . htmlspecialchars($nota->getDescripcion()) . '</td>';
+            echo '<td>' . htmlspecialchars($nota->getNota()) . '</td>';
+            echo '<td>' . htmlspecialchars($nota->getTipo()) . '</td>';
+            echo '</tr>';
+        } ?>
     </table>
+    
 </body>
 </html>
