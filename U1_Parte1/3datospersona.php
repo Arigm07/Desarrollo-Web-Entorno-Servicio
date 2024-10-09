@@ -14,8 +14,7 @@
         <label for="fec_nac">Fecha de nacimiento</label>
         <input type="date" name="fec_nac" id="fec_nac" required value="<?php echo date('Y-m-d', strtotime('2012-05-12')) ?>"><br>
 
-        <label for="fec_prueba">Fecha de nacimiento</label>
-        <input type="date" name="fec_prueba" id="fec_prueba" required value="<?php echo date('Y-m-d', 24*60*60+1) ?>"><br>
+    
 
         <label for="edad">Edad</label>
         <input type="number" name="edad" id="edad" required value="<?php echo (!empty($_POST['edad']) ? ($_POST['edad']) : ''); ?>"><br>

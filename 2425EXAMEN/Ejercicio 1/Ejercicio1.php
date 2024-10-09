@@ -1,0 +1,106 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejercicio 1</title>
+</head>
+
+<body>
+
+<form action="#" method="post">
+    <div>
+    <label for="titulo">Titulo de la pelicula</label>
+        <input type="text" name="titulo" id="titulo" 
+        value="<?php echo (!empty($_POST['titulo']) ? ($_POST['titulo']) : ''); ?>"><br>
+
+    <label for="fechaRegist">Fecha de registro</label>
+        <input type="date" name="fechaRegist" id="fechaRegist" 
+        value="<?php echo date('Y-m-d', strtotime('2023-06-07')) ?>"><br>
+
+
+    <label for="gen">Genero</label><br>
+        <select name="gen" id="gen" multiple="multiple">
+    
+            <option> Comedia </option>
+            <option> Drama </option>
+            <option> Terror </option>
+            <option> Aventura </option>
+        </select><br>
+
+
+
+
+    <label>Tipo</label><br/>
+
+    <label for="pelicula">Pelicula</label>
+        <input type="radio" name="tipo" id="pelicula" value="pelicula" checked="checked"></input>
+
+    <label for="serie">Serie</label>
+        <input type="radio" name="tipo" id="serie" value="serie"></input>
+</div>
+
+
+    <label for="caps">Nº de Capitulos</label><br>
+        <input type="text" name="caps" id="caps" 
+        value="<?php echo (!empty($_POST['caps']) ? ($_POST['caps']) : ''); ?>"><br>
+
+
+        <input type="submit" value="Guardar" name="guardar"></input>
+        
+
+
+</form>
+    
+<?php
+
+if(isset($_POST['guardar'])){
+
+        if(empty($_POST['titulo']) || empty($_POST['fechaRegist'] ) ||
+         empty($_POST['gen']) || empty($_POST['caps'] )){
+            echo "Rellena/marca TODOS los campos";
+         }else{
+            $datos["titulo"] = $_POST['titulo'];
+            $datos["fechaRegist"] = $_POST['fechaRegist'];
+            $datos["caps"] = $_POST['caps'];
+
+
+    echo "Titulo: " .$_POST['titulo'];
+    //Chequear si se ha marcado alguno
+        if(isset($_POST['titulo']))
+        foreach($_POST['titulo'] as $ti){
+            echo $ti.'';
+        }
+
+    echo "<br/> Fecha de registro: " .$_POST['fechaRegist'];
+        if(isset($_POST['fechaRegist']))
+        foreach($_POST['fechaRegist'] as $fr){
+            echo $fr.'';
+        }
+
+    echo "<br/> Genero: " .$_POST['gen'];
+    if(isset($_POST['gen']))
+    foreach($_POST['gen'] as $g){
+        echo $g.'';
+    }
+
+
+    echo "<br/> Tipo: " .$_POST['tipo'];
+        if(isset($_POST['tipo']))
+        foreach($_POST['tipo'] as $s){
+            echo $s.'';
+
+    echo "<br/> Nº capitulos: " .$_POST['caps'];
+    if(isset($_POST['caps']))
+    foreach($_POST['caps'] as $c){
+        echo $c.'';
+    }
+}
+         }
+        }
+?>
+
+
+</body>
+</html>
