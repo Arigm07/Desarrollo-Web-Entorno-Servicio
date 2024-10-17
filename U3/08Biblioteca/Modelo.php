@@ -5,7 +5,7 @@ class Modelo {
     private $conexion;
 
     public function __construct() {
-        
+
         try {
             $config = $this->obtenerDatos();
             if ($config != null) {
@@ -16,6 +16,7 @@ class Modelo {
                     $config['psBD']
                 );
             }
+
         } catch (\Throwable $th) {
             // Muestra un error en caso de fallo
             echo $th->getMessage();
@@ -38,6 +39,7 @@ class Modelo {
         return $resultado;
     }
 
+    
 
     /**
      * Get the value of conexion
@@ -45,6 +47,7 @@ class Modelo {
     public function getConexion() {
         return $this->conexion;
     }
+
 
     /**
      * Set the value of conexion
