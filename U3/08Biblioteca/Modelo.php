@@ -1,5 +1,7 @@
 <?php
 
+require_once 'Usuario.php';
+
 class Modelo {
 
     private $conexion;
@@ -39,7 +41,38 @@ class Modelo {
         return $resultado;
     }
 
-    
+
+
+    public function loguear($us,$ps){
+        //Devuelve null si los datos no son correctos
+        //Y un objeto ususario si los datos son correctos
+        $resultado = null;
+
+        //Ejecutamos la consulta 
+        //SELECT * FROM usuarios WHERE id = nombreUS and ps=psUS cifrada
+        try{
+            $consulta = $this -> conexion->prepare('SELECT * FROM usuarios
+            WHERE id = ? AND ps=sha2(?,512)');
+
+            //Rellenar parametros
+            $param = array($us,$ps);
+
+            //Ejecutar consulta
+            if($consulta->execute($param)){
+                //Recuperar el resultado y transformarlo en un objeto usuario
+                if($fila = $consulta->fetch()){
+
+                // Crear el objeto Usuario usando los datos obtenidos 
+                $resultado = new Usuario($fila['id'], $fila['tipo']); // Ajusta las columnas según tu tabla
+                }
+            }
+
+        }catch(\Throwable $th){
+            echo $th->getMessage();
+                }
+                return $resultado;
+    }
+
 
     /**
      * Get the value of conexion

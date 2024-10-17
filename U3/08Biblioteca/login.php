@@ -5,10 +5,27 @@ if (isset($_POST['entrar'])) {
     $bd = new Modelo();
     if ($bd->getConexion() == null) {
         $error = 'Error, no se puede conectar con la BD';
+
     } else {
-        $error = 'Conecta...';
-    }
-}
+       //Comprobar usuario y ps si los datos son correctos
+       //Guardamos el usuario en una sesión y redirigimos
+       //a la pag prestamos.php
+       $us=$bd->loguear($_POST['usuario'],$_POST['ps']);
+
+       if ($us != null) {
+        // Almacenar el usuario en la sesión
+                    $_SESSION['usuario'] = $us;
+                
+        // Redirigir a la página prestamos.php
+                    header("Location: prestamos.php");
+                      
+        exit(); // Termina el script para evitar que se ejecute después de la redirección
+                } else {
+                    
+        $error = 'Error, datos incorrectos';
+                }
+            }
+        }
 ?>
 
 
