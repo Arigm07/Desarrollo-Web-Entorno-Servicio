@@ -1,10 +1,9 @@
 <?php
 if(isset($_POST['jugar'])){
     session_start();
-    $_SESSION['nombre'] = $_POST['nombre'];
+    $_SESSION['nombre']=$_POST['nombre'];
     header('location:index.php');
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -15,13 +14,11 @@ if(isset($_POST['jugar'])){
     <title>Document</title>
 </head>
 <body>
-    
     <form action="" method="post">
         <label for="nombre">Nombre</label>
         <input type="text" name="nombre" id="nombre" required="required"/>
 
-        <input type="submit" name="jugar" name="Jugar"/>
-
+        <input type="submit" name="jugar" value="Jugar"/>
     </form>
 </body>
 </html>
