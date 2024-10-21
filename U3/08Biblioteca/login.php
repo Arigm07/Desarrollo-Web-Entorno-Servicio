@@ -1,32 +1,39 @@
 <?php
 require_once 'Modelo.php';
+session_start();
+
+// Verificar si el usuario ya ha iniciado sesión
+if (isset($_SESSION['usuario'])) {
+
+    // Redirigir a prestamos.php si el usuario ya está autenticado
+    header('location: prestamos.php');
+    exit(); 
+}
 
 if (isset($_POST['entrar'])) {
     $bd = new Modelo();
+
     if ($bd->getConexion() == null) {
         $error = 'Error, no se puede conectar con la BD';
 
     } else {
-       //Comprobar usuario y ps si los datos son correctos
-       //Guardamos el usuario en una sesión y redirigimos
-       //a la pag prestamos.php
-       $us=$bd->loguear($_POST['usuario'],$_POST['ps']);
+        // Comprobar usuario y contraseña si los datos son correctos
+        $us = $bd->loguear($_POST['usuario'], $_POST['ps']);
+        
+        if ($us != null) {
+            // Almacenar el usuario en la sesión
+            $_SESSION['usuario'] = $us;
 
-       if ($us != null) {
-        // Almacenar el usuario en la sesión
-                    $_SESSION['usuario'] = $us;
-                
-        // Redirigir a la página prestamos.php
-                    header("Location: prestamos.php");
-                      
-        exit(); // Termina el script para evitar que se ejecute después de la redirección
-                } else {
-                    
-        $error = 'Error, datos incorrectos';
-                }
-            }
+            // Redirigir a la página prestamos.php
+            header('location: prestamos.php');
+            exit(); 
+        } else {
+            $error = 'Error, datos incorrectos';
         }
+    }
+}
 ?>
+
 
 
 <!DOCTYPE html>

@@ -73,6 +73,35 @@ class Modelo {
                 return $resultado;
     }
 
+    function obtenerSocios() {
+        // DEVUELVE UN ARRAY VACÍO SI NO HAY SOCIOS, SI HAY SOCIOS, DEVUELVE UN ARRAY CON OBJETOS SOCIO
+        $resultado = array();
+    
+        try {
+            $textoConsulta = 'SELECT * FROM socios';
+            // Ejecutar consulta
+            $c = $this->conexion->query($textoConsulta);
+            if ($c) {
+                // ACCEDER AL RESULTADO DE LA CONSULTA
+                while ($fila = $c->fetch(PDO::FETCH_ASSOC)) {
+                    // Crear un objeto Socio por cada fila y agregarlo al array resultado
+                    $socio = new Socio(
+                        $fila['id'], 
+                        $fila['nombre'], 
+                        $fila['fechaSancion'], 
+                        $fila['email'], 
+                        $fila['usuario']
+                    );
+                    $resultado[] = $socio;
+                }
+            }
+        } catch (\Throwable $th) {
+            echo $th->getMessage();
+        }
+    
+        return $resultado;
+    }
+    
 
     /**
      * Get the value of conexion
