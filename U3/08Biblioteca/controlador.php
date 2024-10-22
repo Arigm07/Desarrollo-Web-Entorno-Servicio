@@ -20,6 +20,7 @@ if(isset($_POST['pCrear'])){
     
     if ($resultado == 'ok'){
         //Hacer el préstamo
+        $error='Se puede hacer el prestamo';
 
     }else{
         $error = $resultado;

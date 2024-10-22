@@ -40,7 +40,7 @@ if ($_SESSION['usuario']->getTipo() == 'A') {
 
     <form action="" method="post">
         <div class="mb-3">
-            <label for="socio" class="form-label">Socio</label>
+            <label for="socio">Socio</label>
             <select name="socio" id="socio" class="form-select">
                 <?php
                 // Iteramos sobre los socios para llenar el select
@@ -51,7 +51,7 @@ if ($_SESSION['usuario']->getTipo() == 'A') {
                 ?>
             </select>
 
-            <label for="libro" class="form-label">Libro</label>
+            <label for="libro">Libro</label>
             <select name="libro" id="libro" class="form-select">
                 <?php
                 // Iteramos sobre los socios para llenar el select
