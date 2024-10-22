@@ -43,36 +43,36 @@ class Modelo {
 
 
 
-    public function loguear($us,$ps){
-        //Devuelve null si los datos no son correctos
-        //Y un objeto ususario si los datos son correctos
+    public function loguear($us, $ps) {
         $resultado = null;
-
-        //Ejecutamos la consulta 
-        //SELECT * FROM usuarios WHERE id = nombreUS and ps=psUS cifrada
-        try{
-            $consulta = $this -> conexion->prepare('SELECT * FROM usuarios
-            WHERE id = ? AND ps=sha2(?,512)');
-
-            //Rellenar parametros
-            $param = array($us,$ps);
-
-            //Ejecutar consulta
-            if($consulta->execute($param)){
-                //Recuperar el resultado y transformarlo en un objeto usuario
-                if($fila = $consulta->fetch()){
-
-                // Crear el objeto Usuario usando los datos obtenidos 
-                $resultado = new Usuario($fila['id'], $fila['tipo']); // Ajusta las columnas según tu tabla
+    
+        try {
+            // Consulta para buscar el usuario y la contraseña en la base de datos
+            $consulta = $this->conexion->prepare('SELECT * FROM usuarios WHERE usuario = ? AND ps = sha2(?, 512)');
+    
+            // Rellenar los parámetros
+            $param = array($us, $ps);
+    
+            // Ejecutar la consulta
+            if ($consulta->execute($param)) {
+                // Recuperar el resultado
+                if ($fila = $consulta->fetch(PDO::FETCH_ASSOC)) {
+                    // Crear un objeto Usuario con los datos obtenidos
+                    $resultado = new Usuario(
+                        $fila['id'],
+                        $fila['nombre'],
+                        $fila['usuario'],
+                        $fila['email']
+                    );
                 }
             }
-
-        }catch(\Throwable $th){
+        } catch (\Throwable $th) {
             echo $th->getMessage();
-                }
-                return $resultado;
+        }
+    
+        return $resultado;
     }
-
+    
     function obtenerSocios() {
         // DEVUELVE UN ARRAY VACÍO SI NO HAY SOCIOS, SI HAY SOCIOS, DEVUELVE UN ARRAY CON OBJETOS SOCIO
         $resultado = array();

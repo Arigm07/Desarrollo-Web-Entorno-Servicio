@@ -53,18 +53,18 @@ if (isset($_POST['entrar'])) {
         <!-- Agregado method="post" para que el formulario envíe datos -->
         <form method="post">
             <div class="mb-3">
-                <label for="exampleInputEmail1" class="form-label">Usuario</label>
-                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" required>
-                <div id="emailHelp" class="form-text">Nunca compartiremos tu correo con nadie más.</div>
+                <label for="usuario" class="form-label">Usuario</label>
+                <input type="email" class="form-control" id="usuario" name="usuario" required>
             </div>
 
             <div class="mb-3">
-                <label for="exampleInputPassword1" class="form-label">Password</label>
-                <input type="password" class="form-control" id="exampleInputPassword1" required>
+                <label for="ps" class="form-label">Password</label>
+                <input type="password" class="form-control" id="ps" name="ps" required>
             </div>
 
             <button type="submit" class="btn btn-primary" name="entrar">Entrar</button>
         </form>
+
 
         <!-- Mostrar mensaje de error si existe -->
         <?php
