@@ -24,20 +24,57 @@ if(isset($error)){
 </div>
 
 <div>
-    <!-- Area de insert (solo admin) -->
-    <?php
-    if($_SESSION['usuario']->getTipo() == 'A'){
-        //OBTENEMOS LOS SOCIOS
-        $socios = $bd->obtenerSocios();
-    }
-    ?>
-    
+
+    <!-- Área de inserción (solo admin) -->
+<?php
+if ($_SESSION['usuario']->getTipo() == 'A') {
+
+    // OBTENEMOS LOS SOCIOS
+    $socios = $bd->obtenerSocios();
+
+    //OBTENEMOS LIBROS
+    $libros = $bd->obtenerLibros();
+?>
+
+
+
     <form action="" method="post">
+        <div class="mb-3">
+            <label for="socio" class="form-label">Socio</label>
+            <select name="socio" id="socio" class="form-select">
+                <?php
+                // Iteramos sobre los socios para llenar el select
+                foreach ($socios as $s) {
+                    // Cerramos correctamente el echo y añadimos el valor de la opción
+                    echo '<option value="' . $s->getId() . '">' . $s->getNombre() . ' (' . $s->getUs() . ')</option>';
+                }
+                ?>
+            </select>
 
+            <label for="libro" class="form-label">Libro</label>
+            <select name="libro" id="libro" class="form-select">
+                <?php
+                // Iteramos sobre los socios para llenar el select
+                foreach ($libros as $l) {
+                    // Cerramos correctamente el echo y añadimos el valor de la opción
+                    echo '<option value="' . $l->getId() . '">' . $l->getTitulo(). ' (' . 
+                    $l->getEjemplares() . ' (' . $l->getAutor().')</option>';
+                }
+                ?>
+            </select>
+
+        </div>
+
+        <!-- Botón para enviar el formulario -->
+        <button type="submit1" name="pCrear">Crear préstamo</button>
     </form>
-    
-</div>
 
-</body>
+<?php
+}
+?>
+
+        </div>
+
+    </body>
 
 </html>

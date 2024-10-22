@@ -17,6 +17,6 @@ if($_SESSION['usuario']->getTipo() == 'A'){
 
 
 <form action="" method="post">
-    <span> <?php echo $_SESSION['Usuario']->getId();?> </span>
+    <span> <?php echo $_SESSION['usuario']->getId();?> </span>
     <button type="submit" name="cerrar">Salir</button>
 </form>

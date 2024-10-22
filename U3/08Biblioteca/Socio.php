@@ -1,19 +1,17 @@
 <?php
-
 class Socio{
     private $id,$nombre,$fechaSancion,$email,$us;
 
-    function __construct($id,$nombre,$fechaSancion,$email,$us){
-        
+    function __construct($id,$nombre,$fechaSancion,$email,$us)
+    {
         $this->id=$id;
         $this->nombre=$nombre;
         $this->fechaSancion=$fechaSancion;
         $this->email=$email;
         $this->us=$us;
     }
-
-
-
+    
+    
 
 
     /**
