@@ -1,42 +1,35 @@
 <?php
 require_once 'Modelo.php';
 session_start();
-
-// Verificar si el usuario ya ha iniciado sesión
-if (isset($_SESSION['usuario'])) {
-
-    // Redirigir a prestamos.php si el usuario ya está autenticado
-    header('location: prestamos.php');
-    exit(); 
+if(isset($_SESSION['usuario'])){
+    //Redirigimos si ya estamos logueados
+    header('location:prestamos.php');
 }
-
-if (isset($_POST['entrar'])) {
+if(isset($_POST['entrar'])){
     $bd = new Modelo();
-
-    if ($bd->getConexion()==null) {
+    if($bd->getConexion()==null){
         $error = 'Error, no se puede conectar con la BD';
-
-    } else {
-        // Comprobar usuario y contraseña si los datos son correctos
-        $us = $bd->loguear($_POST['usuario'], $_POST['ps']);
-        
-        if ($us!=null) {
-            // Almacenar el usuario en la sesión
-            $_SESSION['usuario']=$us;
-
-            // Redirigir a la página prestamos.php
-            header('location: prestamos.php'); 
-        } else {
-            $error = 'Error, datos incorrectos';
+    }
+    else{
+        //Comprobar usuario y ps y si los datos son correctos
+        //Guardamos el usuario en una sesión y redirigimos
+        //a la página préstamos.php
+        $us = $bd->loguear($_POST['usuario'],$_POST['ps']);
+        if($us!=null){
+            //Almacenamos en la sesión
+            $_SESSION['usuario'] = $us;
+            //Redirigimos
+            header('location:prestamos.php');
+        }
+        else{
+            $error='Error, datos incorrectos';
         }
     }
 }
 ?>
-
-
-
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -47,30 +40,27 @@ if (isset($_POST['entrar'])) {
 
 <body>
     <div class="container">
-        <p class="display-2">Biblioteca - Login</p>
 
-        <!-- Agregado method="post" para que el formulario envíe datos -->
-        <form method="post">
+    <p class="display-2">Biblioteca - Login</p>
+        <form action="" method="post">
             <div class="mb-3">
-                <label for="usuario" class="form-label">Usuario</label>
-                <input type="text" name="usuario" class="form-control" id="usuario"  required>
+                <label for="exampleInputEmail1" class="form-label">Usuario</label>
+                <input type="text" name="usuario" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"/>
             </div>
-
             <div class="mb-3">
-                <label for="ps" class="form-label">Password</label>
-                <input type="password" class="form-control" id="ps" name="ps" required>
+                <label for="exampleInputPassword1" class="form-label">Password</label>
+                <input type="password" name="ps" class="form-control" id="exampleInputPassword1">
             </div>
-
+        
             <button type="submit" class="btn btn-primary" name="entrar">Entrar</button>
         </form>
-
-
-        <!-- Mostrar mensaje de error si existe -->
         <?php
-        if (isset($error)) {
-            echo '<div class="text-danger">' . $error . '</div>';
+        if(isset($error)){
+            echo '
+            <br/><div class="alert alert-danger" role="alert">'.$error.'</div>';
         }
         ?>
     </div>
 </body>
+
 </html>

@@ -1,14 +1,15 @@
 <?php
-
 class Libro{
     private $id,$titulo,$ejemplares,$autor;
 
-    function __construct($id,$titulo,$ejemplares,$autor){
+    function __construct($id,$titulo,$ejemplares,$autor)
+    {
         $this->id=$id;
         $this->titulo=$titulo;
         $this->ejemplares=$ejemplares;
         $this->autor=$autor;
     }
+
 
     /**
      * Get the value of id
@@ -90,5 +91,4 @@ class Libro{
         return $this;
     }
 }
-
 ?>
