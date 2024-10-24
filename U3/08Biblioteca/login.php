@@ -1,10 +1,13 @@
 <?php
 require_once 'Modelo.php';
 session_start();
+
 if(isset($_SESSION['usuario'])){
     //Redirigimos si ya estamos logueados
     header('location:prestamos.php');
 }
+
+
 if(isset($_POST['entrar'])){
     $bd = new Modelo();
     if($bd->getConexion()==null){
@@ -27,6 +30,8 @@ if(isset($_POST['entrar'])){
     }
 }
 ?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -60,6 +65,8 @@ if(isset($_POST['entrar'])){
             <br/><div class="alert alert-danger" role="alert">'.$error.'</div>';
         }
         ?>
+
+        
     </div>
 </body>
 

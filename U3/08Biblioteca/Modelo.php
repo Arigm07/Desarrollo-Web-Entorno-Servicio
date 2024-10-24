@@ -2,10 +2,12 @@
 require_once 'Usuario.php';
 require_once 'Socio.php';
 require_once 'Libro.php';
+require_once 'Prestamo.php';
 
 class Modelo{
     
     private $conexion=null;
+
 
     public function __construct()
     {
@@ -23,6 +25,9 @@ class Modelo{
         }
     }
 
+
+
+
     private function obtenerDatos(){
         $resultado = array();
         if(file_exists('.config')){
@@ -37,6 +42,9 @@ class Modelo{
         }
         return $resultado;
     }
+
+
+
 
     public function loguear($us,$ps){
         //Devuelve null si los datos no son correctos
@@ -67,6 +75,9 @@ class Modelo{
 
         return $resultado;
     }
+
+
+
     function obtenerSocios(){
         //Devuleve un array vacío si no hay socios
         //Si hay socios devuelve un array con objetos Socio
@@ -89,6 +100,9 @@ class Modelo{
         return $resultado;
     }
 
+
+
+
     function obtenerLibros(){
         //Devuleve un array vacío si no hay liros
         //Si hay libros devuelve un array con objetos Libro
@@ -110,6 +124,10 @@ class Modelo{
         }
         return $resultado;
     }
+
+
+
+
 
     public function comprobar($socio,$libro){
         $resultado='ok';
@@ -141,6 +159,9 @@ class Modelo{
         }
         return $resultado;
     }
+
+
+
 
 
     public function crearPrestamo($idSocio,$idLibro){
@@ -184,6 +205,41 @@ class Modelo{
         }
     }
 
+
+
+
+
+    public function obtenerPrestamos(){
+        $resultado = array();
+
+        try {
+            $consulta=$this->conexion->query('SELECT * from prestamos as p 
+            inner join socios as s on p.socio=s.id 
+            inner join libros as l on p.libro=l.id
+            order by p.fechaD, p.id desc');
+
+            if($consulta){
+                while ($fila=$consulta->fetch()){
+                    //CREAMOS OBJETO PRÉSTAMO, EL SOCIO Y EL LIBRO SON OBJETOS
+                    $p = new Prestamo($fila[0],
+                    new Socio($fila['socio'],$fila['nombre'],$fila['fechaSancion'],
+                                $fila['email'],$fila['us']),
+                    new Libro($fila['libro'],$fila['titulo'],$fila['ejemplares'],$fila['autor']),
+                    $fila['fechaP'],
+                    $fila['fechaD'],
+                    $fila['fechaRD']);
+
+                    //AÑADIMOS EL PRÉSTAMO AL RESULTADO
+                    $resultado[]= $p;
+                }
+            }
+
+        } catch (\Throwable $th) {
+            echo $th->getMessage();
+
+        }
+        return $resultado;
+    }
 
 
 
