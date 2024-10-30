@@ -11,8 +11,6 @@ class Prestamo{
         $this->fechaRD=$fechaRD;
     }
 
-
-    
     /**
      * Get the value of socio
      */ 
