@@ -133,7 +133,7 @@ require_once 'controlador.php';
                                             '<button class="btn btn-outline-secondary" type="submit" id="sMSocio" name="sMSocio" value="'.$u->getId().'>Modificar</button>
                                             <button class="btn btn-outline-secondary" type="submit" id="sBSocio" name="sBSocio" value="'.$s->getId().'>Borrar</button>'
                                             .'</td>';
-                                    echo '</tr>';đ
+                                    echo '</tr>';
                             }
 
                             ?>
