@@ -24,6 +24,11 @@ class Modelo{
         }
     }
 
+
+
+
+
+
     private function obtenerDatos(){
         $resultado = array();
         if(file_exists('.config')){
@@ -38,6 +43,11 @@ class Modelo{
         }
         return $resultado;
     }
+
+
+
+
+
 
     public function loguear($us,$ps){
         //Devuelve null si los datos no son correctos
@@ -68,6 +78,15 @@ class Modelo{
 
         return $resultado;
     }
+
+
+
+
+
+
+
+
+
     function obtenerSocios(){
         //Devuleve un array vacío si no hay socios
         //Si hay socios devuelve un array con objetos Socio
@@ -90,6 +109,16 @@ class Modelo{
         return $resultado;
     }
 
+
+
+
+
+
+
+
+
+
+
     function obtenerLibros(){
         //Devuleve un array vacío si no hay liros
         //Si hay libros devuelve un array con objetos Libro
@@ -111,6 +140,15 @@ class Modelo{
         }
         return $resultado;
     }
+
+
+
+
+
+
+
+
+
 
     public function comprobar($socio,$libro){
         $resultado='ok';
@@ -142,6 +180,13 @@ class Modelo{
         }
         return $resultado;
     }
+
+
+
+
+
+
+
 
     public function crearPrestamo($idSocio, $idLibro){
         $resultado=0;
@@ -183,6 +228,14 @@ class Modelo{
         return $resultado;
     }
 
+
+
+
+
+
+
+
+
     public function obtenerPrestamos(){
         $resultado = array();
         try {
@@ -210,6 +263,13 @@ class Modelo{
         }
         return $resultado;
     }
+
+
+
+
+
+
+
     function obtenerPrestamo($id){
         $resultado = null;
         try {
@@ -234,6 +294,14 @@ class Modelo{
         }
         return $resultado;
     }
+
+
+
+
+
+
+
+
 
     function devolverPrestamo($p,$sancionar){
         $resultado=false;
@@ -284,6 +352,15 @@ class Modelo{
         }
         return $resultado;
     }
+
+
+
+
+
+
+
+
+
     function obtenerPrestamosSocio($us){
         $resultado = array();
         try {
@@ -309,6 +386,16 @@ class Modelo{
         }
         return $resultado;
     }
+
+
+
+
+
+
+
+
+
+
     public function crearLibro($l){
         $resultado=0;
         try {
@@ -331,6 +418,14 @@ class Modelo{
         }
         return $resultado;
     }
+
+
+
+
+
+
+
+
     function obtenerUsuarioDni($dni){
         $resultado=null;
         try {
@@ -349,43 +444,87 @@ class Modelo{
     }
 
 
+
+
+
+
+
+
+
+
     public function crearUsuario($u,$s){
         $resultado=false;
         try {
             $this->conexion->beginTransaction();
-
             //Crear usuario
-            $consulta=$this->conexion->prepare('INSERT into usuarios values (?,?,512),?)');
-            $params=array($u->getId(),$u->getId(),$u->getTipo());
+            $consulta=$this->conexion->prepare('INSERT into usuarios values (?,sha2(?,512),?)');
+            $params=array($u->getId(),$u->getId(),$u->getTipo()); 
             if($consulta->execute($params) and $consulta->rowCount()==1){
-
                 //Comprobar si crear socio
                 if($s!=null){
-                    //Crear socio
+                    //Crear Socio
                     $consulta=$this->conexion->prepare('INSERT into socios values (null,?,null,?,?)');
                     $params=array($s->getNombre(),$s->getEmail(),$s->getUs());
                     if($consulta->execute($params) and $consulta->rowCount()==1){
                         $this->conexion->commit();
                         $resultado=true;
-                    }else{
+                    }
+                    else{
                         $this->conexion->rollBack();
                     }
-
-                }else{
+                }
+                else{
                     $this->conexion->commit();
-                    $resultado=true;
+                    $resultado=true; 
                 }
             }
-            
-        } catch (PDOException $e) {
+        } 
+        catch (\PDOException $e) {
+            $this->conexion->rollBack();
             echo $e->getMessage();
-
-        }catch (\Throwable $th) {
+        }
+        catch (\Throwable $th) {
             echo $th->getMessage();
         }
-
         return $resultado;
     }
+
+
+
+
+
+
+
+
+
+
+function obtenerDatosUsSocios(){
+    $resultado = array();
+
+    try {
+        $consulta=$this->conexion->query('SELECT * from usuarios as u
+                                        left outer join socios as s on u.id = s.us order by u.tipo,u.id');
+       
+        while($fila =  $consulta->fetch()){
+            $resultado[] = array(new Usuario($fila[0],$fila['tipo']),
+            new Socio($fila[3],$fila['nombre'],$fila['fechaSancion'],$fila['email'],$fila['us']));
+            
+        }
+    
+
+    } catch (\Throwable $th) {
+        echo $th->getMessage();
+    }
+    return $resultado;
+}
+
+
+
+
+
+
+
+
 
     /**
      * Get the value of conexion

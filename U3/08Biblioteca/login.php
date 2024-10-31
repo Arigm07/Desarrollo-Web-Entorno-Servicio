@@ -1,6 +1,8 @@
 <?php
 require_once 'Modelo.php';
 session_start();
+
+
 if(isset($_SESSION['usuario'])){
     //Redirigimos si ya estamos logueados
     header('location:prestamos.php');

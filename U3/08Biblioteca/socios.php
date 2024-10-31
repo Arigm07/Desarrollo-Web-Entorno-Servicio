@@ -1,6 +1,9 @@
 <?php
 require_once 'controlador.php';
+
 ?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -39,24 +42,22 @@ require_once 'controlador.php';
                         <div class="col-md-3">
                             <label for="dni" class="form-label">DNI</label>
                             <input type="text" class="form-control" name="dni" id="dni" 
-                            value="<?php echo(isset($_POST['dni'])) ?>"/>
-
+                            value="<?php echo (isset($_POST['dni'])?$_POST['dni']:'')?>"/>
                         </div>
                         <div class="col-md-3">
                             <label for="tipo" class="form-label">Tipo</label>
                             <select class="form-select" name="tipo" id="tipo" onchange="submit()">
                                 <option value="A">Administrador</option>
-                                <option value="S"<?php echo(isset($_POST['tipo']) and $_POST['tipo']=='S'?'selected=selected':'') ?>
-                                    >Socio</option>
-                               
+                                <option value="S" 
+                        <?php echo (isset($_POST['tipo']) && $_POST['tipo']=='S'?'selected="selected"':'')?>
+                            >Socio</option>
                             </select>
                         </div>
-                        <!-- quitar botón 
                         <div class="col-md-3">
                             <label class="form-label">Acción</label><br />
-                            <button class="btn btn-outline-secondary" type="submit" id="sCrear" name="sCrear">+</button>
+                            <button class="btn btn-outline-secondary" type="submit" id="sCrearSocio" name="sCrearSocio">+</button>
                         </div>
-            -->
+        
 
                     </div>
                     <?php
@@ -71,10 +72,7 @@ require_once 'controlador.php';
                             <label for="email" class="form-label">Email</label>
                             <input type="email" class="form-control" name="email" id="email" />
                         </div>
-                        <div class="col-md-3">
-                            <label class="form-label">Acción</label><br />
-                            <button class="btn btn-outline-secondary" type="submit" id="sCrearSocio" name="sCrearSocio">+</button>
-                        </div>
+                        
                     </div>
                 <?php
                 }
@@ -102,10 +100,46 @@ require_once 'controlador.php';
                             <?php } ?>
                         </tr>
                     </thead>
-                    <tbody>
 
+
+                    <tbody>
+                            <?php
+
+                            $datos = $bd->obtenerDatosUsSocios();
+
+                            foreach($datos as $d){
+                                $u = $d[0];
+                                $s = $d[1];
+                                    echo '<tr>';
+                                        echo '<td>'.$u->getId().'</td>';
+                                        echo '<td>'.$u->getTipo().'</td>';
+                                            if($u->getTipo()=='S'){
+                                                echo '<td>'.$s->getId().'</td>';
+                                                echo '<td>'.$s->getNombre().'</td>';
+
+                                                // - Si es null, muestra una cadena vacía (''), dejando la celda vacía en la tabla.
+                                                // - Si tiene un valor (no es null), muestra la fecha de sanción en la celda.
+                                                echo '<td>'.($s->getFechaSancion() == null ? '' : $s->getFechaSancion()).'</td>';
+
+                                                echo '<td>'.$s->getEmail().'</td>';
+
+                                            }else{
+                                                echo '<td></td>';
+                                                echo '<td></td>';
+                                                echo '<td></td>';
+                                                echo '<td></td>';
+                                            }
+                                            echo '<td>'.
+                                            '<button class="btn btn-outline-secondary" type="submit" id="sMSocio" name="sMSocio" value="'.$u->getId().'>Modificar</button>
+                                            <button class="btn btn-outline-secondary" type="submit" id="sBSocio" name="sBSocio" value="'.$s->getId().'>Borrar</button>'
+                                            .'</td>';
+                                    echo '</tr>';đ
+                            }
+
+                            ?>
 
                     </tbody>
+
                 </table>
             </form>
         </div>
