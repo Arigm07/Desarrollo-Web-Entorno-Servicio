@@ -1,9 +1,6 @@
 <?php
 require_once 'controlador.php';
-
 ?>
-
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -57,11 +54,9 @@ require_once 'controlador.php';
                             <label class="form-label">Acción</label><br />
                             <button class="btn btn-outline-secondary" type="submit" id="sCrearSocio" name="sCrearSocio">+</button>
                         </div>
-        
-
                     </div>
                     <?php
-                    if(isset($_SESSION['crearSocio']) and $_SESSION['crearSocio']){
+                    if(isset($_POST['tipo']) and $_POST['tipo']=='S'){
                     ?>
                     <div class="row g-3">
                         <div class="col-md-3">
@@ -74,9 +69,9 @@ require_once 'controlador.php';
                         </div>
                         
                     </div>
-                <?php
-                }
-                ?>
+                    <?php
+                    }
+                    ?>
                 </form>
             <?php
             }
@@ -100,46 +95,42 @@ require_once 'controlador.php';
                             <?php } ?>
                         </tr>
                     </thead>
-
-
                     <tbody>
-                            <?php
-
+                        <?php
                             $datos = $bd->obtenerDatosUsSocios();
-
                             foreach($datos as $d){
-                                $u = $d[0];
-                                $s = $d[1];
-                                    echo '<tr>';
-                                        echo '<td>'.$u->getId().'</td>';
-                                        echo '<td>'.$u->getTipo().'</td>';
-                                            if($u->getTipo()=='S'){
-                                                echo '<td>'.$s->getId().'</td>';
-                                                echo '<td>'.$s->getNombre().'</td>';
+                                $u=$d[0];
+                                $s=$d[1];
+                                echo '<tr>';
+                                echo '<td>' . generarInput('input','dni',$u->getId(),'sMSocio',$u->getId()) . '</td>';
 
-                                                // - Si es null, muestra una cadena vacía (''), dejando la celda vacía en la tabla.
-                                                // - Si tiene un valor (no es null), muestra la fecha de sanción en la celda.
-                                                echo '<td>'.($s->getFechaSancion() == null ? '' : $s->getFechaSancion()).'</td>';
+                                echo '<td>'.$u->getTipo().'</td>';
 
-                                                echo '<td>'.$s->getEmail().'</td>';
+                                if($u->getTipo()=='S'){
+                                    echo '<td>'.$s->getId().'</td>';
+                                    echo '<td>'.generarInput('input','nombre',$s->getNombre(),'sMSocio',$u->getId()).'</td>';
 
-                                            }else{
-                                                echo '<td></td>';
-                                                echo '<td></td>';
-                                                echo '<td></td>';
-                                                echo '<td></td>';
-                                            }
-                                            echo '<td>'.
-                                            '<button class="btn btn-outline-secondary" type="submit" id="sMSocio" name="sMSocio" value="'.$u->getId().'>Modificar</button>
-                                            <button class="btn btn-outline-secondary" type="submit" id="sBSocio" name="sBSocio" value="'.$s->getId().'>Borrar</button>'
-                                            .'</td>';
-                                    echo '</tr>';
+                                    echo '<td>' . ($s->getFechaSancion() == null ? '' 
+                                        : generarInput('input type="date"', 'fSancion', $s->getFechaSancion(), 'sMSocio',$u->getId())) . '</td>';
+                            
+                                    echo '<td>'.generarInput('input type="email"', 'email', $s->getEmail(), 'sMSocio',$u->getId()).'</td>';
+                               
+                                }else{
+                                    echo '<td></td>';
+                                    echo '<td></td>';
+                                    echo '<td></td>';
+                                    echo '<td></td>';
+                               
+                                }
+                                echo '<td>'.
+                                generarBotones('sMSocio','sGSocio','Modificar','Guardar','sMSocio',$u->getId()).
+                                generarBotones('sBSocio','sCSocio','Borrar','Cancelar','sMSocio',$u->getId())
+                                .'</td>';
+                                echo '</tr>';
                             }
-
-                            ?>
+                        ?>
 
                     </tbody>
-
                 </table>
             </form>
         </div>
