@@ -35,7 +35,6 @@ class Correo
         $resultado = false;
         try {
             $correo = new PHPMailer(true);
-
             //Confirgurar datos del servidor saliente
             $correo->isSMTP();
             $correo->Host = 'smtp.gmail.com';
@@ -44,11 +43,9 @@ class Correo
             $correo->Password = $this->ca;
             $correo->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
             $correo->Port = 465;
-
             //Configuración del correo que vamos a escribir
             $correo->setFrom('agarciam275@educarex.es', 'Bibiloteca de Ari');
             $correo->addAddress($destinatario->getEmail(), $destinatario->getNombre());
-
             //Configuración del contenido del mensaje
             $correo->isHTML(true);
             $correo->CharSet = 'UTF-8';
@@ -56,7 +53,6 @@ class Correo
             $texto = $textoHtml;
             $correo->Body = $texto;
             $correo->AltBody = $textoNoHtml;
-            
             //Enviar correo
             if ($correo->send()) {
                 $resultado = true;
