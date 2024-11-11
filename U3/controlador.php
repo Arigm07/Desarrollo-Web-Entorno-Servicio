@@ -2,6 +2,25 @@
 require_once 'Modelo.php';
 require_once 'Correo.php';
 
+
+
+function generarInput($tipo,$nombre,$valor,$boton,$valorBoton){
+    if (isset($_POST[$boton]) && $_POST[$boton] == $valorBoton) {
+        return '<'.$tipo.'name="'.$nombre.'"value="'.$valor.'"/>';
+    }else{
+        return $valor;
+    }
+}
+
+function generarBotones($nombreB1,$nombreB2,$textoB1,$textoB2,$boton,$valorBoton){
+    if(isset($_POST[$boton]) && $_POST[$boton]==$valorBoton){
+        return '<button class="btn btn-outline-secondary" type="submit" name="'.$nombreB2.'"
+        value="'.$valorBoton.'">'.$textoB2.'</button>';
+    }else{
+        return '<button class="btn btn-outline-secondary" type="submit" name="'.$nombreB1.'"
+        value="'.$valorBoton.'">'.$textoB1.'</button>';
+    }
+
 function generarInput($tipo,$nombre,$valor,$boton,$valorBoton){
     if(isset($_POST[$boton]) && $_POST[$boton]==$valorBoton){
         return '<'.$tipo.' name="'.$nombre.'" value="'.$valor.'"/>';
@@ -53,11 +72,12 @@ function generarModal($titulo,$textoVentana,$nombreBoton,$valorBoton,$textoBoton
     </div>
   </div>
 </div>';
+
 }
 
 
-
 session_start();
+
 //Si no hay sessión iniciada, redirigimos a login
 if (!isset($_SESSION['usuario'])) {
     header('location:login.php');
@@ -146,7 +166,7 @@ if (isset($_POST['sCrearSocio']) and $_SESSION['usuario']->getTipo() == 'A') {
                     $email = new Correo();
                     if($email->getCa()!=null){
                         $textoHTML='<h1>'.$s->getNombre().
-                            ', bienvenido a la Biblioteca de Sri</h1>'
+                            ', bienvenido a la Biblioteca de Rosa</h1>'
                             .'<p>Tus credenciales de acceso son:<br/>'
                             .'Usuario:'.$s->getUs().'<br/>'
                             .'Contraseña:'.$s->getUs().'<br/>'
@@ -256,4 +276,5 @@ if ((isset($_POST['sBSocio']) or isset($_POST['sDeleteSocio'])) and $_SESSION['u
     else{
         $error='Error, no existe el usuario';
     }
+}
 }
