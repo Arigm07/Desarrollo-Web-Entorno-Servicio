@@ -10,7 +10,7 @@
 </head>
 <body>
     <div class="container d-flex justify-content-center align-items-center vh-100">
-        <img src="{{asset('img/logo.jpg')}}" alt="logo">
+        
     <form action="{{route('registrar')}}" method="post" class="row g-3">
         @csrf
         <div class="row-md-3">
@@ -43,7 +43,7 @@
         </div>
         <div class="row-md-3">
             <button type="submit" name="crearU" value="crearU" class="btn btn-outline-secondary">Crear</button>
-            <a href="{{route('vistaLogin')}}" class="btn btn-outline-secondary">Volver</a>
+            <a href="{{route('login')}}" class="btn btn-outline-secondary">Volver</a>
         </div>
     </form>
     @if (session('mensaje'))
