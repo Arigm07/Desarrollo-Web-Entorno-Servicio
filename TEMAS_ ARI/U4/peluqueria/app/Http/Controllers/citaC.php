@@ -3,12 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cita;
+use App\Models\DetalleCita;
+use App\Models\Servicio;
 use Illuminate\Http\Request;
 
 class citaC extends Controller
 {
     function verCitas(){
-        $citas= Cita::orderBy('fecha','DESC')->get();
+        $citas= Cita::orderBy('fecha','DESC')->orderBy('hora')->get();
         return view('citas',compact('citas'));
     }
 
@@ -52,6 +54,40 @@ class citaC extends Controller
     }
 
     function crearDetalle($id){
-        return view('detalle');
+        //Recuperar la cita
+        $cita=Cita::find($id);
+        $servicio=Servicio::all();
+        if($cita!=null){
+            return view('detalle', compact('cita','servicios'));
+        }else{
+            return back()->with('mensaje', 'Error, no existe la cita');
+        }
+        
+    }
+
+    function insertarDetalle(Request $request,$id){
+        $cita=Cita::find($id);
+
+        if($cita!=null){
+            $servicio = Servicio::find($request->servicio);
+
+            if ($servicio!=null) {
+                //crear el detalle
+                $d = new DetalleCita();
+                $d->cita_id = $cita->id;
+                $d->servicio_id = $servicio->id;
+                $d->precio = $servicio->precio;
+
+                if($d->save()){
+                    return back()->with('mensaje', 'Servicio añadido');
+                }else{
+                    return back()->with('mensaje', 'Error, no se ha añadido el servicio');
+                }
+            }
+            
+        }else{
+            return back()->with('mensaje', 'Error, no existe la cita');
+        }
+        
     }
 }

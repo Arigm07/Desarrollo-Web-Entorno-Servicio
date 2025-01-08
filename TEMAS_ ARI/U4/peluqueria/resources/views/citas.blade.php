@@ -50,7 +50,7 @@
             <td>{{ $c->cliente }}</td>
             <td>{{ $c->total }}</td>
             <td>
-                <form action="{{route('crearDetalle',[$c->id])}}" method="get">
+                <form action="{{route('cargarDetalle',[$c->id])}}" method="get">
                     @csrf
                     <button type="submit" name="detalleC">Detalle</button>
                 </form>
