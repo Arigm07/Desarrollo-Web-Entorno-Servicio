@@ -11,10 +11,16 @@ class ProductoController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
-        //
+    public function index(){
+        try {
+            return Producto::all();
+
+        } catch (\Throwable $th) {
+            return response()->json('Error:'.$th->getMessage(),500);
+        }
     }
+
+    
 
     /**
      * Store a newly created resource in storage.

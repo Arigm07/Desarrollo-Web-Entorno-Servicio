@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <script src="axios/dist/axios.min.js"></script>
+</head>
+<body>
+    <form action="">
+        <label for="email">Email</label><br/>
+        <input type="text" id="email" placeholder="email@gmail.com"><br/>
+
+        <label for="ps">Contraseña</label><br/>
+        <input type="password" id="ps"><br/>
+
+            <button type="button" onclick="login()">Entrar</button>
+    </form>
+    
+    <script>
+        function login(){
+            const url = 'http://localhost/DWES/ARI/U5/APITienda/public/api/login';
+            const datos ={ 
+                email:document.getElementById('email').value,
+                ps:document.getElementById('ps').value
+            };
+
+            axios.post(url,datos)
+            .then(response=> {
+                //Si va bien, redirigir a la tienda
+                const token = response.data.token;
+                const us = response.data.nombre;
+                window.location.href = 'tienda.html'
+            })
+            .catch(error=>{
+                alert('Login incorrecto')
+            });
+        }
+    </script>
+</body>
+</html>
